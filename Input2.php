@@ -20,7 +20,6 @@ class Input
         } else if(isset($_GET[$item])) {
             return $_POST[$item];
         }
-        // комментарий
         return false;
     }
 }
