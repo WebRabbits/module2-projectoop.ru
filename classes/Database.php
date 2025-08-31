@@ -69,6 +69,7 @@ class Database
 
     public function insert($table, $fields = [])
     {
+
         $values = "";
         foreach ($fields as $value) {
             $values .= "?,";
@@ -124,6 +125,10 @@ class Database
 
     // При обращение к методу - возвращает из множества элементов массива ПЕРВЫЙ элемент
     public function first() {
-        return $this->results()[0];
+        if(!empty($this->results())){
+            return $this->results()[0];
+        }
+
+        return false;
     }
 }

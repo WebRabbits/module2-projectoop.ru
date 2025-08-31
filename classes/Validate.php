@@ -55,9 +55,14 @@ class Validate
                             break;
 
                         case "unique":
-                            $checkValueUsername = $this->db->get($rule_value, [$item, "=", $value]);
-                            if ($checkValueUsername->count()) {
+                            $checkValue = $this->db->get($rule_value, [$item, "=", $value]);
+                            if ($checkValue->count()) {
                                 $this->addError("Такое значение \"$item\" уже используется");
+                            }
+                            break;
+                        case "email":
+                            if(!filter_var($value, FILTER_VALIDATE_EMAIL)){
+                                $this->addError("Поле \"$item\" заполнено неверно");
                             }
                             break;
                     }
