@@ -30,7 +30,7 @@ class Validate
         foreach ($items as $item => $rules) {
             foreach ($rules as $rule => $rule_value) {
 
-                $value = $source[$item];
+                $value = $source[$item] ?? "";
 
                 if (empty($value) && $rule == "required") {
                     $this->addError("Поле \"$item\" обязательно для заполнения");

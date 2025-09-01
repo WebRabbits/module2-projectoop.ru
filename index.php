@@ -160,6 +160,7 @@ $user = new User();
 
 if ($user->isLoggedIn()) {
     echo "Hello <a href='#'>" . $user->data()->username . "</a><br>";
+    echo "<a href='update.php'>Update profile</a><br>";
     echo "<a href='logout.php'>Logout</a>";
 } else {
     echo "<a href='login.php'>Login</a> OR <a href='register.php'>Register</a>";
