@@ -112,4 +112,6 @@ class User
     {
         return Session::delete($this->session_name);
     }
+
+    
 }
