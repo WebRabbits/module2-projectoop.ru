@@ -8,7 +8,7 @@ class Database
     private function __construct()
     {
         try {
-            $this->pdo = new PDO("mysql:host=". Config::get("mysql.host") .";dbname=" . Config::get("mysql.database"), Config::get("mysql.username"), Config::get("mysql.password"));
+            $this->pdo = new PDO("mysql:host=" . Config::get("mysql.host") . ";dbname=" . Config::get("mysql.database"), Config::get("mysql.username"), Config::get("mysql.password"));
         } catch (PDOException $exception) {
             die($exception->getMessage());
         }
@@ -86,10 +86,11 @@ class Database
         return false;
     }
 
-    public function update($table, $id, $fields = []) {
+    public function update($table, $id, $fields = [])
+    {
 
         $values = "";
-        foreach($fields as $key => $field) {
+        foreach ($fields as $key => $field) {
             $values .= $key . " = ?, ";
         }
         $values = rtrim($values, ", ");
@@ -97,8 +98,8 @@ class Database
         $sql = "UPDATE $table SET $values WHERE id = ?";
 
         $fields["id"] = $id; // Добавление в массив значений доп.параметра $id для передачи в нумерованный placeholder
-        
-        if(!$this->query($sql, array_values($fields))->error) {
+
+        if (!$this->query($sql, array_values($fields))->error) {
             return true;
         }
 
@@ -113,7 +114,7 @@ class Database
             [$field, $operator, $value] = $where;
 
             if (in_array($operator, $operators, true)) {
-                $sql = "$action FROM $table WHERE $field $operator ?";
+                $sql = "$action FROM `$table` WHERE $field $operator ?";
                 if (!$this->query($sql, [$value])->error()) {
                     return $this;
                 }
@@ -124,8 +125,9 @@ class Database
     }
 
     // При обращение к методу - возвращает из множества элементов массива ПЕРВЫЙ элемент
-    public function first() {
-        if(!empty($this->results())){
+    public function first()
+    {
+        if (!empty($this->results())) {
             return $this->results()[0];
         }
 

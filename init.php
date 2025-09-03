@@ -35,11 +35,11 @@ $GLOBALS["config"] = [
     ]
 ];
 
-if(Cookie::exists(Config::get("cookie.cookie_name")) && !Session::exists(Config::get("session.session_user"))) {
+if (Cookie::exists(Config::get("cookie.cookie_name")) && !Session::exists(Config::get("session.session_user"))) {
     $hash = Cookie::get(Config::get("cookie.cookie_name"));
     $hashCheck = Database::getInstance()->get("user_session", ["hash", "=", $hash]);
 
-    if($hashCheck->count()){
+    if ($hashCheck->count()) {
         $user = new User($hashCheck->first()->user_id);
         $user->login();
     }

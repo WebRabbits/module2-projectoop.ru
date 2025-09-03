@@ -34,8 +34,9 @@ class User
         $this->db->insert("users", $fields);
     }
 
-    public function update($fields = [], $id = null) {
-        if(!$id && $this->isLoggedIn) { // Условие проверят, ЕСЛИ $id == null - то присваиваем в $id значение идентификатора текущего авторизованного пользователя. ЕСЛИ $id != null - то передаём для обновления записи в БД переданный при вызове метода идентификатор
+    public function update($fields = [], $id = null)
+    {
+        if (!$id && $this->isLoggedIn) { // Условие проверят, ЕСЛИ $id == null - то присваиваем в $id значение идентификатора текущего авторизованного пользователя. ЕСЛИ $id != null - то передаём для обновления записи в БД переданный при вызове метода идентификатор
             $id = $this->data()->id;
         }
 
@@ -95,8 +96,9 @@ class User
         return $this->data;
     }
 
-    public function exists() {
-        if(isset($this->data)) {
+    public function exists()
+    {
+        if (isset($this->data)) {
             return true;
         }
 
@@ -110,8 +112,24 @@ class User
 
     public function logout()
     {
-        return Session::delete($this->session_name);
+        $this->db->delete("user_session", ["user_id", "=", $this->data()->id]);
+        Session::delete($this->session_name);
+        Cookie::delete($this->cookieName);
     }
 
-    
+    public function hasPermissions($key = null)
+    {
+        $group = $this->db->get("groups", ["id", "=", $this->data()->group_id]);
+
+        if ($group->count()) {
+            $permissions = $group->first()->permissions;
+            $permissions = json_decode($permissions, true);
+
+            if (isset($permissions[$key])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
